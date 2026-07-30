@@ -13,7 +13,7 @@ public class Cliente {
     private String direccion;
 
     // Relación de composición
-    private List<Mascota> mascotas;
+    private final List<Mascota> mascotas;
 
     //Constructor
     public Cliente(int id, String nombre, String telefono, String correo, String direccion) {
@@ -29,10 +29,37 @@ public class Cliente {
 
     // Métodos para administrar mascotas
     public void agregarMascota(Mascota mascota) {
-        mascotas.add(mascota);
+        if (mascota != null) {
+            mascotas.add(mascota);
+        }
     }
-    public void eliminarMascota(Mascota mascota) {
-        mascotas.remove(mascota);
+
+    public boolean eliminarMascota(Mascota mascota) {
+        return mascotas.remove(mascota);
+    }
+
+    public Mascota buscarMascotaPorId(int idMascota) {
+        for (Mascota mascota : mascotas) {
+            if (mascota.getId() == idMascota) {
+                return mascota;
+            }
+        }
+
+        return null;
+    }
+
+    public Mascota buscarMascotaPorNombre(String nombreMascota) {
+        for (Mascota mascota : mascotas) {
+            if (mascota.getNombre().equalsIgnoreCase(nombreMascota)) {
+                return mascota;
+            }
+        }
+
+        return null;
+    }
+
+    public int obtenerCantidadMascotas() {
+        return mascotas.size();
     }
 
     //Setters
