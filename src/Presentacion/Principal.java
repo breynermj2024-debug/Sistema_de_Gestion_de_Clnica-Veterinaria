@@ -3,6 +3,7 @@ package Presentacion;
 import Negocio.CitaServicio;
 import Negocio.ClienteServicio;
 import Negocio.VeterinarioServicio;
+import Negocio.ServicioServicio;
 
 import javax.swing.*;
 
@@ -20,6 +21,7 @@ public class Principal extends JFrame {
         ClienteServicio clienteServicio = new ClienteServicio();
         VeterinarioServicio veterinarioServicio = new VeterinarioServicio();
         CitaServicio citaServicio = new CitaServicio();
+        ServicioServicio servicioServicio = new ServicioServicio();
 
 
         // Paneles
@@ -39,6 +41,9 @@ public class Principal extends JFrame {
                         veterinarioServicio
                 );
 
+        ServicioPanel servicioPanel =
+                new ServicioPanel(servicioServicio, clienteServicio);
+
 
         // Pestañas
         JTabbedPane pestañas = new JTabbedPane();
@@ -48,26 +53,31 @@ public class Principal extends JFrame {
         pestañas.addTab("Veterinarios", veterinarioPanel);
         pestañas.addTab("Citas", citaPanel);
 
+        pestañas.addTab("Clientes", clientePanel);
+        pestañas.addTab("Mascotas", mascotaPanel);
+        pestañas.addTab("Veterinarios", veterinarioPanel);
+        pestañas.addTab("Citas", citaPanel);
+        pestañas.addTab("Servicios", servicioPanel);
+
 
 
         pestañas.addChangeListener(e -> {
 
             int seleccion = pestañas.getSelectedIndex();
 
-
             if (seleccion == 1) {
-
                 // Actualiza clientes en Mascotas
                 mascotaPanel.actualizarClientes();
-
             }
 
-
             if (seleccion == 3) {
-
                 // Actualiza mascotas y veterinarios en Citas
                 citaPanel.actualizarDatos();
+            }
 
+            if (seleccion == 4) {
+                // Actualiza mascotas en Servicios
+                servicioPanel.actualizarMascotas();
             }
 
         });
