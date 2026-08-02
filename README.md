@@ -9,7 +9,7 @@ veterinarios, citas, consultas, servicios y facturación.
 - Breyner Mora Jiménez — Clientes, mascotas y relación de composición
 - Pamela María Montiel Serrano — Veterinarios y citas
 - Jason Steve Ortiz Tenorio — Consultas, servicios y jerarquía polimórfica
-- Joselyn Rodríguez Bonilla — Facturación, base de datos/JDBC e integración del multihilo
+- Joselyn Tatiana Rodríguez Bonilla — Facturación, base de datos/JDBC e integración del multihilo
 
 ## Tecnologías
 
