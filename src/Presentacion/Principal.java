@@ -1,102 +1,78 @@
 package Presentacion;
-
 import Negocio.CitaServicio;
 import Negocio.ClienteServicio;
 import Negocio.VeterinarioServicio;
 import Negocio.ServicioServicio;
-
 import javax.swing.*;
-
 public class Principal extends JFrame {
-
     public Principal() {
-
         setTitle("Sistema de Clínica Veterinaria");
         setSize(1200, 700);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
         // Servicios compartidos
         ClienteServicio clienteServicio = new ClienteServicio();
         VeterinarioServicio veterinarioServicio = new VeterinarioServicio();
         CitaServicio citaServicio = new CitaServicio();
+        citaServicio.cargarDesdeBD(obtenerTodasLasMascotas(clienteServicio), veterinarioServicio.listarTodos());
         ServicioServicio servicioServicio = new ServicioServicio();
-
-
         // Paneles
         ClientePanel clientePanel =
                 new ClientePanel(clienteServicio);
-
         MascotaPanel mascotaPanel =
                 new MascotaPanel(clienteServicio);
-
         VeterinarioPanel veterinarioPanel =
                 new VeterinarioPanel(veterinarioServicio);
-
         CitaPanel citaPanel =
                 new CitaPanel(
                         citaServicio,
                         clienteServicio,
                         veterinarioServicio
                 );
-
         ServicioPanel servicioPanel =
                 new ServicioPanel(servicioServicio, clienteServicio);
-
-
+        FacturaPanel facturaPanel =
+                new FacturaPanel(servicioServicio);
         // Pestañas
         JTabbedPane pestañas = new JTabbedPane();
-
-        pestañas.addTab("Clientes", clientePanel);
-        pestañas.addTab("Mascotas", mascotaPanel);
-        pestañas.addTab("Veterinarios", veterinarioPanel);
-        pestañas.addTab("Citas", citaPanel);
-
         pestañas.addTab("Clientes", clientePanel);
         pestañas.addTab("Mascotas", mascotaPanel);
         pestañas.addTab("Veterinarios", veterinarioPanel);
         pestañas.addTab("Citas", citaPanel);
         pestañas.addTab("Servicios", servicioPanel);
-
-
-
+        pestañas.addTab("Facturación", facturaPanel);
         pestañas.addChangeListener(e -> {
-
             int seleccion = pestañas.getSelectedIndex();
-
             if (seleccion == 1) {
-                // Actualiza clientes en Mascotas
                 mascotaPanel.actualizarClientes();
             }
-
             if (seleccion == 3) {
-                // Actualiza mascotas y veterinarios en Citas
                 citaPanel.actualizarDatos();
             }
-
             if (seleccion == 4) {
-                // Actualiza mascotas en Servicios
                 servicioPanel.actualizarMascotas();
             }
-
+            if (seleccion == 5) {
+                facturaPanel.actualizarDatos();
+            }
         });
-
-
         add(pestañas);
-
     }
 
+    // Junta las mascotas de todos los clientes ya cargados, para que
+    // CitaServicio pueda reconstruir las citas guardadas en la base de datos.
+    private java.util.List<Modelo.Mascota> obtenerTodasLasMascotas(ClienteServicio clienteServicio) {
+        java.util.List<Modelo.Mascota> todas = new java.util.ArrayList<>();
+        for (Modelo.Cliente c : clienteServicio.listarClientes()) {
+            todas.addAll(c.getMascotas());
+        }
+        return todas;
+    }
 
     public static void main(String[] args) {
-
         SwingUtilities.invokeLater(() -> {
-
             Principal ventana = new Principal();
-
             ventana.setVisible(true);
-
         });
-
     }
 }
